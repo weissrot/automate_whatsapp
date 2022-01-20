@@ -38,8 +38,7 @@ def reply():
             users.update_one(
                 {"number": number}, {"$set": {"status": "ordering"}})
             response.message(
-                "You can select one of the following cakes to order: \n\n1️⃣ Red Velvet  \n2️⃣ Dark Forest \n3️⃣ Ice Cream Cake"
-                "\n4️⃣ Plum Cake \n5️⃣ Sponge Cake \n6️⃣ Genoise Cake \n7️⃣ Angel Cake \n8️⃣ Carrot Cake \n9️⃣ Fruit Cake  \n0️⃣ Go Back")
+                "What do you want to talk about?")
         elif option == 3:
             response.message("I do sports from *9 a.m. to 5 p.m*.")
         elif option == 4:
@@ -47,45 +46,18 @@ def reply():
         else:
             response.message("Please enter a valid response")
     elif user["status"] == "ordering":
-        try:
-            option = int(text)
-        except:
-            response.message("Please enter a valid response")
-            return str(response)
-        if option == 0:
+        if "handsome" in text:
             users.update_one(
                 {"number": number}, {"$set": {"status": "main"}})
-            response.message("You can choose from one of the options below: "
-                        "\n\n*Type*\n\n 1️⃣ To *contact* us \n 2️⃣ To *order* snacks \n 3️⃣ To know our *working hours* \n 4️⃣ "
-                        "To get our *address*")
-        elif 1 <= option <= 9:
-            cakes = ["Red Velvet Cake", "Dark Forest Cake", "Ice Cream Cake",
-                     "Plum Cake", "Sponge Cake", "Genoise Cake", "Angel Cake", "Carrot Cake", "Fruit Cake"]
-            selected = cakes[option - 1]
+            response.message("Frederik")
+        elif "hi" in text
             users.update_one(
-                {"number": number}, {"$set": {"status": "address"}})
-            users.update_one(
-                {"number": number}, {"$set": {"item": selected}})
-            response.message("Excellent choice 😉")
-            response.message("Please enter your address to confirm the order")
+                {"number": number}, {"$set": {"status": "main"}})
+            response.message("Good morning! What do you plan to do today?")
         else:
-            response.message("Please enter a valid response")
-    elif user["status"] == "address":
-        selected = user["item"]
-        response.message("Thanks for shopping with us 😊")
-        response.message(f"Your order for *{selected}* has been received and will be delivered within an hour")
-        orders.insert_one({"number": number, "item": selected, "address": text})
-        users.update_one(
-            {"number": number}, {"$set": {"status": "ordered"}})
-    elif user["status"] == "ordered":
-        response.message("Hi, thanks for contacting *The Cutest Bot again*.\nYou can choose from one of the options below: "
-                    "\n\n*Type*\n\n 1️⃣ talking about *relationship* 😘 \n 2️⃣ talking about *work* 😅 \n 3️⃣ talking about *sports* 😎 \n 4️⃣ "
-                    "talking about *happiness* 😀")
-        users.update_one(
-            {"number": number}, {"$set": {"status": "main"}})
-
-
-
+            users.update_one(
+                {"number": number}, {"$set": {"status": "main"}})
+            response.message("Let me think about it")
 
     users.update_one({"number": number}, {"$push": {"messages": {"text": text}}})
     return str(response)
